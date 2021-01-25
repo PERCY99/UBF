@@ -7,23 +7,25 @@ from . import models
 admin.site.site_header = 'UPSCBasicFunda'
 
 
+# add_fieldsets = (
+#     (None, {
+#         'fields': ('email', 'username', 'is_student', 'is_teacher', 'password1', 'password2')
+#     }),
+#     ('Permissions', {
+#         'fields': ('is_superuser', 'is_staff')
+#     })
+# )
+# fieldsets = (
+#     (None, {
+#         'fields': ('email', 'username', 'is_student', 'is_teacher', 'password')
+#     }),
+#     ('Permissions', {
+#         'fields': ('is_superuser', 'is_staff')
+#     })
+# )
+
 class UserAdmin(BaseUserAdmin):
-    # add_fieldsets = (
-    #     (None, {
-    #         'fields': ('email', 'username', 'is_student', 'is_teacher', 'password1', 'password2')
-    #     }),
-    #     ('Permissions', {
-    #         'fields': ('is_superuser', 'is_staff')
-    #     })
-    # )
-    # fieldsets = (
-    #     (None, {
-    #         'fields': ('email', 'username', 'is_student', 'is_teacher', 'password')
-    #     }),
-    #     ('Permissions', {
-    #         'fields': ('is_superuser', 'is_staff')
-    #     })
-    # )
+
     list_display = ['email', 'username', 'mobile']
     list_display_links = ['email', 'username']
     search_fields = ('email', 'username')
@@ -59,7 +61,7 @@ class SubCategoryAdmin(nested_admin.NestedModelAdmin):
     inlines = [PDFInline, SummaryInline, MCQInline]
 
 
-admin.site.register(models.User, UserAdmin)
+admin.site.register(models.User)
 # admin.site.unregister(Group)
 admin.site.register(models.TeamMember)
 admin.site.register(models.TeamForm)

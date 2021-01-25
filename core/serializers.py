@@ -17,11 +17,11 @@ class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField(allow_blank = True, allow_null=True)
     email = serializers.EmailField(allow_blank = True, allow_null=True)
-
+    profile_pic = serializers.ImageField(allow_null=True)
 
     class Meta:
         model = models.User
-        fields = ('email', 'username', 'password', 'mobile', 'first_name', 'last_name')
+        fields = ('email', 'username', 'password', 'mobile', 'first_name', 'last_name', 'profile_pic')
 
     def get_cleaned_data(self):
         return {
@@ -32,7 +32,7 @@ class CustomRegisterSerializer(RegisterSerializer):
             'password2': self.validated_data.get('password2', ''),
             'email': self.validated_data.get('email', ''),
             'mobile': self.validated_data.get('mobile', ''),
-
+            'profile_pic': self.validated_data.get('profile_pic', ''),
         }
 
     def save(self, request):
@@ -40,6 +40,7 @@ class CustomRegisterSerializer(RegisterSerializer):
         user = adapter.new_user(request)
         self.cleaned_data = self.get_cleaned_data()
         user.mobile = self.cleaned_data.get('mobile')
+        user.profile_pic = self.cleaned_data.get('profile_pic')
         user.save()
         adapter.save_user(request, user, self)
         return user

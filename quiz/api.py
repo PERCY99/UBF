@@ -46,6 +46,27 @@ class QuizListAPI(generics.ListAPIView):
 
 		return queryset
 
+	def list(self,request,*args,**kwargs):
+		qs = self.get_queryset()
+
+		serializer = self.serializer_class(qs,many=True)
+		live = request.GET.get("live")
+		data=list()
+		data2=list()
+		if live:
+			live=live.lower()
+			for i in serializer.data:
+				if i['islive']:
+					data.append(i)
+				else:
+					data2.append(i)
+		if live:
+			if live == 'true':
+				return Response(data)
+			elif live == 'false':
+				return Response(data2)
+		else:
+			return Response(serializer.data)
 
 class QuizDetailAPI(generics.RetrieveAPIView):
 	serializer_class = QuizDetailSerializer

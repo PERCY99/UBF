@@ -1,22 +1,77 @@
-from quiz.models import Quiz, QuizTaker, Question, Answer, UsersAnswer
+from quiz.models import Quiz, QuizTaker, Question, Answer, UsersAnswer, QuizSlot
 from rest_framework import serializers
 from django.db.models import Count
+from datetime import datetime,timedelta
+from pytz import timezone
 
+class QuizSlotSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = QuizSlot
+		fields = '__all__'
 
 class QuizListSerializer(serializers.ModelSerializer):
 	questions_count = serializers.SerializerMethodField()
 	type = serializers.SerializerMethodField()
+	islive = serializers.SerializerMethodField()
+	currentslot = serializers.SerializerMethodField()
+	nextslot = serializers.SerializerMethodField()
+	quizslot_set = QuizSlotSerializer(many=True)
 
 	class Meta:
 		model = Quiz
-		fields = ["id", "name", "description", "image", "slug", "questions_count", "price", "type"]
-		read_only_fields = ["questions_count", "type"]
+		fields = ["id", "name", "description", "image", "slug", "questions_count", "price", "type","duration","live","islive","currentslot","nextslot","quizslot_set","rollout_date"]
+		read_only_fields = ["questions_count", "type", "live"]
 
 	def get_questions_count(self, obj):
 		return obj.question_set.all().count()
 
 	def get_type(self, obj):
 		return "test"
+
+	def get_islive(self, obj):
+		quizSlot = QuizSlot.objects.filter(quiz=obj)
+		now = datetime.now()
+		for slot in quizSlot:
+			# print(slot.id)
+			# print(slot.start_datetime)
+			# print("endtime")
+			# print(slot.start_datetime+obj.duration)
+			if now >= slot.start_datetime and now <= (slot.start_datetime + obj.duration):
+				print("here")
+				return True
+		return False
+
+	def get_currentslot(self, obj):
+		data = {}
+		quizSlot = QuizSlot.objects.filter(quiz=obj)
+		now = datetime.now()
+		for slot in quizSlot:
+			if now >= slot.start_datetime and now <= (slot.start_datetime + obj.duration):
+				data = {
+					"startTime": (slot.start_datetime).strftime("%b %d %Y %H:%M:%S"),
+					"duration": str(obj.duration),
+					"endTime": (slot.start_datetime + obj.duration).strftime("%b %d %Y %H:%M:%S")
+				}
+				return data
+
+		return data
+
+	def get_nextslot(self, obj):
+		data = {}
+		quizSlot = QuizSlot.objects.filter(quiz=obj)
+		now = datetime.now()
+		for slot in quizSlot:
+			if now < slot.start_datetime and now < (slot.start_datetime + obj.duration):
+				print(obj.duration)
+				data = {
+					"startTime": (slot.start_datetime).strftime("%b %d %Y %H:%M:%S"),
+					"duration": str(obj.duration),
+					"endTime": (slot.start_datetime + obj.duration).strftime("%b %d %Y %H:%M:%S")
+				}
+				return data
+
+		return data
 
 
 class AnswerSerializer(serializers.ModelSerializer):

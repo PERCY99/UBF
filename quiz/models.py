@@ -10,10 +10,13 @@ class Quiz(models.Model):
 	description = models.CharField(max_length=70)
 	image = models.ImageField()
 	slug = models.SlugField(blank=True)
-	roll_out = models.BooleanField(default=False)
 	timestamp = models.DateTimeField(auto_now_add=True)
 	price = models.PositiveSmallIntegerField()
 	duration = models.DurationField(null=True)
+	live = models.BooleanField(default=False)
+	roll_out = models.BooleanField(default=False)
+	rollout_date=models.DateTimeField(blank=True,null=True)
+	answerkey=models.FileField(blank=True,null=True)
 
 	class Meta:
 		ordering = ['timestamp',]

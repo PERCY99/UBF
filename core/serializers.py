@@ -24,7 +24,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     class Meta:
         model = models.User
-        fields = ('email', 'username', 'password', 'mobile', 'first_name', 'last_name', 'profile_pic')
+        fields = ('email', 'username', 'password', 'mobile', 'first_name', 'last_name', 'profile_pic', 'base64')
 
     def get_cleaned_data(self):
         return {

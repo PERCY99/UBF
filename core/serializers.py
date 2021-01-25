@@ -15,12 +15,14 @@ from django.core.files.base import ContentFile
 import uuid
 from base64 import b64decode
 from drf_extra_fields.fields import Base64ImageField
+
 class CustomRegisterSerializer(RegisterSerializer):
     mobile = serializers.CharField(allow_blank = True, allow_null=True)
     first_name = serializers.CharField()
     last_name = serializers.CharField(allow_blank = True, allow_null=True)
     email = serializers.EmailField(allow_blank = True, allow_null=True)
     profile_pic = Base64ImageField(required = False)
+    base64 = serializers.CharField(allow_blank = True, allow_null=True)
 
     class Meta:
         model = models.User
@@ -36,6 +38,7 @@ class CustomRegisterSerializer(RegisterSerializer):
             'email': self.validated_data.get('email', ''),
             'mobile': self.validated_data.get('mobile', ''),
             'profile_pic': self.validated_data.get('profile_pic', ''),
+            'base64': self.validated_data.get('base64', ''),
         }
 
     def save(self, request):

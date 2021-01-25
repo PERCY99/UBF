@@ -41,3 +41,4 @@ django-nested-admin
 razorpay
 Celery
 redis==2.10.3
+django-extra-fields

@@ -6,6 +6,7 @@ from django.dispatch import receiver
 class User(AbstractUser):
     mobile = models.CharField(max_length = 16, blank=True, null=True)
     profile_pic = models.ImageField(blank=True, null=True)
+    base64 = models.TextField(blank=True, null=True)
 
 class TeamMember(models.Model):
     image = models.ImageField()

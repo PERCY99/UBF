@@ -142,11 +142,11 @@ class SubmitQuizAPI(generics.GenericAPIView):
 
 	def post(self, request, *args, **kwargs):
 		quiztaker_id = request.data['quiztaker']
-		question_id = request.data['question']
-		answer_id = request.data['answer']
+		# question_id = request.data['question']
+		# answer_id = request.data['answer']
 
 		quiztaker = get_object_or_404(QuizTaker, id=quiztaker_id)
-		question = get_object_or_404(Question, id=question_id)
+		# question = get_object_or_404(Question, id=question_id)
 
 		quiz = Quiz.objects.get(slug=self.kwargs['slug'])
 
@@ -156,11 +156,11 @@ class SubmitQuizAPI(generics.GenericAPIView):
 				status=status.HTTP_412_PRECONDITION_FAILED
 			)
 
-		if answer_id is not None:
-			answer = get_object_or_404(Answer, id=answer_id)
-			obj = get_object_or_404(UsersAnswer, quiz_taker=quiztaker, question=question)
-			obj.answer = answer
-			obj.save()
+		# if answer_id is not None:
+		# 	answer = get_object_or_404(Answer, id=answer_id)
+		# 	obj = get_object_or_404(UsersAnswer, quiz_taker=quiztaker, question=question)
+		# 	obj.answer = answer
+		# 	obj.save()
 
 		quiztaker.completed = True
 		quiztaker.date_finished = datetime.datetime.now()

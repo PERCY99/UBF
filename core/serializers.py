@@ -11,13 +11,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = models.User
         fields = ('email', 'username', 'password', 'mobile', 'profile_pic', 'first_name', 'last_name')
 
+from django.core.files.base import ContentFile
+import uuid
+from base64 import b64decode
 
 class CustomRegisterSerializer(RegisterSerializer):
     mobile = serializers.CharField(allow_blank = True, allow_null=True)
     first_name = serializers.CharField()
     last_name = serializers.CharField(allow_blank = True, allow_null=True)
     email = serializers.EmailField(allow_blank = True, allow_null=True)
-    profile_pic = serializers.ImageField(allow_null=True)
+    profile_pic = serializers.CharField(allow_blank=True, allow_null=True)
 
     class Meta:
         model = models.User
@@ -40,7 +43,11 @@ class CustomRegisterSerializer(RegisterSerializer):
         user = adapter.new_user(request)
         self.cleaned_data = self.get_cleaned_data()
         user.mobile = self.cleaned_data.get('mobile')
-        user.profile_pic = self.cleaned_data.get('profile_pic')
+
+        image_data = b64decode(self.cleaned_data.get('profile_pic'))
+        image_name = str(uuid.uuid4()) + ".jpg"
+
+        user.profile_pic =ContentFile(image_data, image_name)
         user.save()
         adapter.save_user(request, user, self)
         return user

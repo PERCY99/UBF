@@ -47,6 +47,7 @@ class CustomRegisterSerializer(RegisterSerializer):
         self.cleaned_data = self.get_cleaned_data()
         user.mobile = self.cleaned_data.get('mobile')
         user.profile_pic = self.cleaned_data.get('profile_pic')
+        user.base64 = self.cleaned_data.get('base64')
         user.save()
         adapter.save_user(request, user, self)
         return user

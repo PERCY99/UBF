@@ -15,3 +15,6 @@ urlpatterns = [
 
 router = routers.DefaultRouter()
 router.register('verification', UserVerificationView, basename='userverification')
+
+
+urlpatterns += router.urls

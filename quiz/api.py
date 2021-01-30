@@ -197,7 +197,69 @@ class UserVerificationView(viewsets.ModelViewSet):
 		user_verification = UserVerification.objects.get(id=verification_id)
 		print(user_verification.image)
 
-		return Response("Chutiya Samne Dekh ", status=status.HTTP_200_OK, headers=headers)
+		import cv2
+		import quiz.verification.head_pose_estimation_new as HPEN
+		import quiz.verification.eye_tracker_new as ETN
+		#import face_spoofing_new as FSN
+		import quiz.verification.mouth_opening_detector_new as MODN
+		import quiz.verification.person_and_phone_new as PAPN
 
+		path = user_verification.image.url[1:]
+		img = cv2.imread(path)
+		print("__________________________________________________________________")
+		print(path)
+		print("__________________________________________________________________")
 
+		res1 = HPEN.head_pose_estimator(img)
 		
+		res2 = ETN.eye_track(img)
+
+		#res3 = FSN.face_spoof(img)
+		res4 = MODN.mouth_detect(img)
+		res5 = PAPN.phone_detect(img)
+		print('head_pose: ',res1)
+		print('eye_pos: ',res2)
+		#print('face_spoof: ',res3)
+		print('mouth: ',res4)
+		print('phone or multiple persons: ',res5)
+		
+		response = res1 + res2 + res4 + res5
+			
+
+		return Response(response, status=status.HTTP_200_OK, headers=headers)
+
+
+def tes12t(request):
+	user_verification = UserVerification.objects.get(id=2)
+	print(user_verification.image)
+
+	import cv2
+	import quiz.verification.head_pose_estimation_new as HPEN
+	import quiz.verification.eye_tracker_new as ETN
+	#import face_spoofing_new as FSN
+	import quiz.verification.mouth_opening_detector_new as MODN
+	import quiz.verification.person_and_phone_new as PAPN
+
+	path = user_verification.image.url[1:]
+	img = cv2.imread(path)
+	print("__________________________________________________________________")
+	print(path)
+	print("__________________________________________________________________")
+	print(user_verification.image.url)
+	print(img)
+	res1 = HPEN.head_pose_estimator(img)
+	
+	res2 = ETN.eye_track(img)
+
+	#res3 = FSN.face_spoof(img)
+	res4 = MODN.mouth_detect(img)
+	res5 = PAPN.phone_detect(img)
+	print('head_pose: ',res1)
+	print('eye_pos: ',res2)
+	#print('face_spoof: ',res3)
+	print('mouth: ',res4)
+	print('phone or multiple persons: ',res5)
+	response = res1 + res2 + res4 + res5
+	
+
+	return Response(response, status=status.HTTP_200_OK)

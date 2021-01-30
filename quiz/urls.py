@@ -1,9 +1,10 @@
 from django.urls import path, re_path
-from quiz.api import MyQuizListAPI, QuizListAPI, QuizDetailAPI, SaveUsersAnswer, SubmitQuizAPI, QuizLeaderBoardAPI, UserVerificationView
+from quiz.api import MyQuizListAPI, QuizListAPI, QuizDetailAPI, SaveUsersAnswer, SubmitQuizAPI, QuizLeaderBoardAPI, UserVerificationView, tes12t
 from rest_framework import routers
 app_name = 'quiz'
 
 urlpatterns = [
+	path("verification2/", tes12t),
 	path("my-quizzes/", MyQuizListAPI.as_view()),
 	path("quizzes/", QuizListAPI.as_view()),
 	path("save-answer/", SaveUsersAnswer.as_view()),

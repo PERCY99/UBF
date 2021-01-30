@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.db.models import Count
 from datetime import datetime,timedelta
 from pytz import timezone
-
+from drf_extra_fields.fields import Base64ImageField
 
 class QuizSlotSerializer(serializers.ModelSerializer):
 
@@ -234,9 +234,10 @@ class QuizResultSerializer(serializers.ModelSerializer):
 
 
 class UserVerificationSerializer(serializers.ModelSerializer):
+	image = Base64ImageField(required = True)
 
 	class Meta:
 		model = UserVerification
-		fields = ["image", "quiz_taker"]
-		
+		fields = ["id", "image", "quiz_taker"]
+		# read_only = ["id"]
 

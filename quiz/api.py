@@ -192,6 +192,11 @@ class UserVerificationView(viewsets.ModelViewSet):
 		verification_serializer.is_valid(raise_exception=True)
 		self.perform_create(verification_serializer)
 		headers =self.get_success_headers(verification_serializer.data)
+
+		verification_id = verification_serializer.data['id']
+		user_verification = UserVerification.objects.get(id=verification_id)
+		print(user_verification.image)
+
 		return Response("Chutiya Samne Dekh ", status=status.HTTP_200_OK, headers=headers)
 
 

@@ -1,8 +1,9 @@
-from quiz.models import Quiz, QuizTaker, Question, Answer, UsersAnswer, QuizSlot
+from quiz.models import Quiz, QuizTaker, Question, Answer, UsersAnswer, QuizSlot, UserVerification
 from rest_framework import serializers
 from django.db.models import Count
 from datetime import datetime,timedelta
 from pytz import timezone
+
 
 class QuizSlotSerializer(serializers.ModelSerializer):
 
@@ -232,5 +233,10 @@ class QuizResultSerializer(serializers.ModelSerializer):
 			return None
 
 
+class UserVerificationSerializer(serializers.ModelSerializer):
 
+	class Meta:
+		model = UserVerification
+		fields = ["image", "quiz_taker"]
+		
 

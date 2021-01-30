@@ -3,7 +3,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from . import models
-from quiz.serializers import *
+from quiz import serializers as quizserializer
 import datetime
 
 class UserSerializer(serializers.ModelSerializer):
@@ -247,7 +247,7 @@ class UserSubscriptionsSerializer(serializers.ModelSerializer):
     mcqs = MCQSerializer(many=True, read_only = True)
     summaries = SummarySerializer(many=True, read_only = True)
     sessions = SessionSerializer(many=True, read_only = True)
-    tests = QuizListSerializer(many=True, read_only = True)
+    tests = quizserializer.QuizListSerializer(many=True, read_only = True)
 
     class Meta:
         model = models.UserSubscriptions
@@ -258,7 +258,7 @@ class SearchSerializer(serializers.Serializer):
     mcqs = MCQSerializer(many=True, read_only = True)
     summaries = SummarySerializer(many=True, read_only = True)
     sessions = SessionSerializer(many=True, read_only = True)
-    tests = QuizListSerializer(many=True, read_only = True)
+    tests = quizserializer.QuizListSerializer(many=True, read_only = True)
 
 
 

@@ -78,3 +78,15 @@ class UsersAnswer(models.Model):
 @receiver(pre_save, sender=Quiz)
 def slugify_name(sender, instance, *args, **kwargs):
 	instance.slug = slugify(instance.name)
+
+
+
+class UserVerification(models.Model):
+	quiz_taker = models.ForeignKey("quiz.QuizTaker", on_delete=models.CASCADE)
+	datetime = models.DateTimeField(auto_now_add=True)
+	image = models.ImageField()
+	verified = models.BooleanField(default=False)
+
+	def __str__(self):
+		return str(self.quiz_taker)
+		

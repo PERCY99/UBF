@@ -1,12 +1,14 @@
 from django.db.models import Q, Count
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
-from quiz.models import Answer, Question, Quiz, QuizTaker, UsersAnswer
-from quiz.serializers import MyQuizListSerializer, QuizDetailSerializer, QuizListSerializer, QuizResultSerializer, UsersAnswerSerializer, QuizLeaderBoardSerializer
+from quiz.models import Answer, Question, Quiz, QuizTaker, UsersAnswer, UserVerification
+from quiz.serializers import MyQuizListSerializer, QuizDetailSerializer, QuizListSerializer, QuizResultSerializer, UsersAnswerSerializer, QuizLeaderBoardSerializer, UserVerificationSerializer
 from core import models as coremodels
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 import datetime
+
+
 
 class MyQuizListAPI(generics.ListAPIView):
 	permission_classes = [
@@ -181,3 +183,16 @@ class SubmitQuizAPI(generics.GenericAPIView):
 
 
 
+class UserVerificationView(viewsets.ModelViewSet):
+    queryset = UserVerification.objects.all()
+    serializer_class = UserVerificationSerializer
+
+	def create(self, request, *args, **kwargs):
+		verification_serializer = self.get_serializer(data=request.data)
+		verification_serializer.is_valid(raise_exception=True)
+		self.perform_create(verification_serializer)
+		headers =self.get_success_headers(verification_serializer.data)
+		return Response("Chutiya Samne Dekh ", status=status.HTTP_200_OK, headers=headers)
+
+
+		

@@ -184,8 +184,8 @@ class SubmitQuizAPI(generics.GenericAPIView):
 
 
 class UserVerificationView(viewsets.ModelViewSet):
-    queryset = UserVerification.objects.all()
-    serializer_class = UserVerificationSerializer
+	queryset = UserVerification.objects.all()
+	serializer_class = UserVerificationSerializer
 
 	def create(self, request, *args, **kwargs):
 		verification_serializer = self.get_serializer(data=request.data)

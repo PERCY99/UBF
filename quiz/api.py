@@ -262,10 +262,10 @@ def tes12t(request):
 
 	if(res4 == 'Mouth open' and res1 != 'OK' ):
 		response = 1
-	else if(res1 != 'OK' and res2 != 'OK'):
+	elif(res1 != 'OK' and res2 != 'OK'):
 		response = 1
-	else if(res5 != 'OK')
+	elif(res5 != 'OK'):
 		response = 2
-	
-
+	else:
+		response = 3
 	return Response(response, status=status.HTTP_200_OK)

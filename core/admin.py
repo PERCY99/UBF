@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 import nested_admin
 from . import models
 
-admin.site.site_header = 'UPSCBasicFunda'
+admin.site.site_header = 'Dr. Procto'
 
 
 # add_fieldsets = (

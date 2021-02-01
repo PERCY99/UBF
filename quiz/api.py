@@ -259,7 +259,13 @@ def tes12t(request):
 	#print('face_spoof: ',res3)
 	print('mouth: ',res4)
 	print('phone or multiple persons: ',res5)
-	response = res1 + res2 + res4 + res5
+
+	if(res4 == 'Mouth open' and res1 != 'OK' ):
+		response = 1
+	else if(res1 != 'OK' and res2 != 'OK'):
+		response = 1
+	else if(res5 != 'OK')
+		response = 2
 	
 
 	return Response(response, status=status.HTTP_200_OK)
